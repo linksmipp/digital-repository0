@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цифровая репутация | Тренажёр</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1d4ed8;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --light: #ffffff;
+            --light-gray: #f8fafc;
+            --gray: #e2e8f0;
+            --dark-gray: #94a3b8;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --card-bg: #ffffff;
+            --gradient: linear-gradient(135deg, #2563eb, #1d4ed8);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            background: var(--light-gray);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .header {
+            background: var(--light);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            border-bottom: 1px solid var(--gray);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        @media (min-width: 768px) {
+            .header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.5rem 2rem;
+            }
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            justify-content: center;
+        }
+        @media (min-width: 768px) {
+            .logo {
+                font-size: 1.5rem;
+                justify-content: flex-start;
+            }
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            background: var(--light);
+            padding: 0.75rem;
+            border-radius: 12px;
+            border: 1px solid var(--gray);
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .stats {
+                display: flex;
+                gap: 2rem;
+                padding: 1rem 1.5rem;
+                border-radius: 16px;
+                width: auto;
+            }
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        @media (min-width: 768px) {
+            .stat-value {
+                font-size: 1.8rem;
+            }
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+        @media (min-width: 768px) {
+            .stat-label {
+                font-size: 0.9rem;
+            }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        @media (min-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+        .start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+        .start-screen.active {
+            display: flex;
+        }
+        .start-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid var(--gray);
+            box-shadow: var(--shadow-lg);
+            max-width: 800px;
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .start-card {
+                padding: 3.5rem;
+            }
+        }
+        .start-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        @media (min-width: 768px) {
+            .start-title {
+                font-size: 3.2rem;
+            }
+        }
+        .relevance-box {
+            background: rgba(37, 99, 235, 0.05);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--primary);
+            text-align: left;
+        }
+        .benefits-box {
+            background: rgba(29, 78, 216, 0.05);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--secondary);
+            text-align: left;
+        }
+        .box-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+        .box-content {
+            line-height: 1.6;
+            color: var(--text);
+        }
+        .difficulty-selection {
+            margin: 2.5rem 0;
+        }
+        .difficulty-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+        .difficulty-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .difficulty-btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            background: var(--light);
+            border: 2px solid var(--gray);
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 140px;
+        }
+        .difficulty-btn:hover {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        .difficulty-btn.selected {
+            background: var(--gradient);
+            border-color: var(--primary);
+            color: white;
+        }
+        .scenario-container {
+    display: none;
+    animation: fadeIn 0.5s ease;
+    scroll-margin-top: 100px;
+        }
+        .scenario-container.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .scenario-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--gray);
+            box-shadow: var(--shadow-lg);
+        }
+        @media (min-width: 768px) {
+            .scenario-card {
+                padding: 2.5rem;
+                border-radius: 24px;
+                margin-bottom: 2rem;
+            }
+        }
+        .scenario-header {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .scenario-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+        .scenario-number {
+            background: var(--gradient);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            width: fit-content;
+        }
+        .scenario-difficulty {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            width: fit-content;
+        }
+        .difficulty-easy { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .difficulty-medium { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .difficulty-hard { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .scenario-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+        }
+        @media (min-width: 768px) {
+            .scenario-description {
+                font-size: 1.2rem;
+                margin-bottom: 2rem;
+                padding: 1.5rem;
+            }
+        }
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .options-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+        }
+        .option {
+            background: var(--light-gray);
+            border: 2px solid var(--gray);
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        @media (min-width: 768px) {
+            .option {
+                padding: 1.5rem;
+                gap: 1rem;
+                border-radius: 16px;
+            }
+        }
+        .option:hover {
+            background: rgba(37, 99, 235, 0.05);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        .option.selected {
+            background: rgba(37, 99, 235, 0.08);
+            border-color: var(--primary);
+        }
+        .option.correct {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: var(--success);
+        }
+        .option.incorrect {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: var(--error);
+        }
+        .option-icon {
+            font-size: 1.25rem;
+            font-weight: 600;
+            min-width: 24px;
+            text-align: center;
+            padding-top: 0.1rem;
+            color: var(--text);
+        }
+        @media (min-width: 768px) {
+            .option-icon {
+                font-size: 1.5rem;
+                min-width: 30px;
+            }
+        }
+        .option-content h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: var(--text);
+        }
+        @media (min-width: 768px) {
+            .option-content h4 {
+                font-size: 1.1rem;
+            }
+        }
+        .option-content p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        @media (min-width: 768px) {
+            .option-content p {
+                font-size: 0.95rem;
+            }
+        }
+        .feedback-section {
+            background: var(--light-gray);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            display: none;
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow);
+        }
+        @media (min-width: 768px) {
+            .feedback-section {
+                padding: 2rem;
+                margin-top: 2rem;
+                border-radius: 20px;
+            }
+        }
+        .feedback-section.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .feedback-icon {
+            font-size: 1.75rem;
+            color: var(--primary);
+        }
+        @media (min-width: 768px) {
+            .feedback-icon {
+                font-size: 2rem;
+            }
+        }
+        .feedback-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        @media (min-width: 768px) {
+            .feedback-title {
+                font-size: 1.5rem;
+            }
+        }
+        .consequences {
+            background: rgba(239, 68, 68, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--error);
+        }
+        @media (min-width: 768px) {
+            .consequences {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        .consequences h4 {
+            color: var(--error);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+        @media (min-width: 768px) {
+            .consequences h4 {
+                font-size: 1.1rem;
+            }
+        }
+        .expert-advice {
+            background: rgba(29, 78, 216, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--secondary);
+        }
+        @media (min-width: 768px) {
+            .expert-advice {
+                padding: 1.5rem;
+            }
+        }
+        .expert-advice h4 {
+            color: var(--secondary);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+        @media (min-width: 768px) {
+            .expert-advice h4 {
+                font-size: 1.1rem;
+            }
+        }
+        .navigation {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .navigation {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0;
+                margin-top: 2rem;
+            }
+        }
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .btn {
+                width: auto;
+                padding: 1rem 2rem;
+            }
+        }
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+        .btn-secondary {
+            background: var(--light);
+            color: var(--text);
+            border: 1px solid var(--gray);
+        }
+        .btn-secondary:hover {
+            background: var(--light-gray);
+        }
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+        @media (min-width: 768px) {
+            .progress-container {
+                margin: 2rem 0;
+            }
+        }
+        .progress-bar {
+            height: 6px;
+            background: var(--gray);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        @media (min-width: 768px) {
+            .progress-bar {
+                height: 8px;
+            }
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            width: 2%;
+            transition: width 0.5s ease;
+        }
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+        @media (min-width: 768px) {
+            .progress-text {
+                font-size: 0.9rem;
+            }
+        }
+        .results-screen {
+            display: none;
+            text-align: center;
+            padding: 2rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .results-screen {
+                padding: 4rem 2rem;
+            }
+        }
+        .results-screen.active {
+            display: block;
+        }
+        .results-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        @media (min-width: 768px) {
+            .results-icon {
+                font-size: 5rem;
+                margin-bottom: 2rem;
+            }
+        }
+        .results-title {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        @media (min-width: 768px) {
+            .results-title {
+                font-size: 2.5rem;
+            }
+        }
+        .results-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+        @media (min-width: 768px) {
+            .results-score {
+                font-size: 4rem;
+            }
+        }
+        .results-feedback {
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        @media (min-width: 768px) {
+            .results-feedback {
+                font-size: 1.2rem;
+                margin-bottom: 2rem;
+            }
+        }
+        .theory-section {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+            border: 1px solid var(--gray);
+            box-shadow: var(--shadow);
+            display: none;
+        }
+        .theory-section h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .theory-content {
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .theory-content p {
+            margin-bottom: 1rem;
+        }
+        .theory-content ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+        .developer-info {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--light);
+            margin-top: 2rem;
+            border-top: 1px solid var(--gray);
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        .developer-info p {
+            margin-bottom: 0.5rem;
+        }
+        .developer-info strong {
+            color: var(--primary);
+        }
+        .scenario-counter {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+        .hint {
+            background: rgba(245, 158, 11, 0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 3px solid var(--warning);
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        @media (min-width: 768px) {
+            .action-buttons {
+                flex-direction: row;
+                justify-content: center;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Цифровая репутация</span>
+        </div>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="score">0</div>
+                <div class="stat-label">Баллы</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="current-scenario">1</div>
+                <div class="stat-label">Сценарий</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="correct-count">0</div>
+                <div class="stat-label">Правильно</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="start-screen" class="start-screen active">
+            <div class="start-card">
+                <h1 class="start-title">Тренажёр "Цифровая репутация"</h1>
+                
+                <div class="relevance-box">
+                    <h3 class="box-title"><i class="fas fa-exclamation-circle"></i> Актуальность темы</h3>
+                    <p class="box-content">В современном цифровом мире репутация формируется не только в реальной жизни, но и в интернет-пространстве. Ваши действия в сети, публикации, комментарии и даже лайки создают цифровой след, который может повлиять на ваше будущее: поступление в вуз, трудоустройство, личные отношения.</p>
+                </div>
+                
+                <div class="benefits-box">
+                    <h3 class="box-title"><i class="fas fa-award"></i> Что даст прохождение тренажёра</h3>
+                    <p class="box-content">• Научитесь распознавать киберугрозы и мошеннические схемы<br>
+                    • Узнаете, как защитить личные данные в интернете<br>
+                    • Сформируете навыки безопасного онлайн-общения<br>
+                    • Поймёте, как управлять своей цифровой репутацией<br>
+                    • Получите практические навыки для защиты от кибербуллинга</p>
+                </div>
+                
+                <div class="difficulty-selection">
+                    <h3 class="difficulty-title">Выберите количество кейсов для прохождения:</h3>
+                    <div class="difficulty-buttons">
+                        <button class="difficulty-btn" onclick="selectScenarioCount(10)">10 кейсов</button>
+                        <button class="difficulty-btn" onclick="selectScenarioCount(15)">15 кейсов</button>
+                        <button class="difficulty-btn" onclick="selectScenarioCount(25)">25 кейсов</button>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="startTraining()" id="start-btn" disabled>
+                    <i class="fas fa-play"></i> Начать тренажёр
+                </button>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">Все кейсы основаны на реальных ситуациях и рекомендациях экспертов по цифровой безопасности. При каждом запуске порядок кейсов случайный.</p>
+            </div>
+        </div>
+
+        <div class="progress-container" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-text">
+                <span>Прогресс</span>
+                <span id="progress-text">1/10</span>
+            </div>
+        </div>
+
+        <div id="scenario-container" class="scenario-container"></div>
+
+        <div id="results" class="results-screen">
+            <div class="results-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h1 class="results-title">Тренажёр завершён</h1>
+            <div class="results-score" id="final-score">0</div>
+            <p class="results-feedback" id="results-feedback"></p>
+
+            <div class="theory-section" id="theory-section">
+                <h3><i class="fas fa-book"></i> Основы цифровой безопасности</h3>
+                <div class="theory-content">
+                    <p><strong>1. Защита личных данных:</strong></p>
+                    <ul>
+                        <li>Никогда не делитесь паролями, даже с друзьями</li>
+                        <li>Используйте разные пароли для разных сервисов</li>
+                        <li>Включайте двухфакторную аутентификацию</li>
+                        <li>Не публикуйте личную информацию: адрес, телефон, паспортные данные</li>
+                    </ul>
+                    
+                    <p><strong>2. Безопасное общение в сети:</strong></p>
+                    <ul>
+                        <li>Не доверяйте незнакомцам, даже после долгого общения</li>
+                        <li>Не отправляйте личные фото и видео</li>
+                        <li>Встречайтесь с интернет-знакомыми только в публичных местах</li>
+                        <li>Сообщайте о подозрительных пользователях администрации</li>
+                    </ul>
+                    
+                    <p><strong>3. Распознавание мошенничества:</strong></p>
+                    <ul>
+                        <li>Любые просьбы перевести деньги — красный флаг</li>
+                        <li>Бесплатные предложения с предоплатой — всегда обман</li>
+                        <li>Проверяйте информацию в официальных источниках</li>
+                        <li>Не переходите по подозрительным ссылкам</li>
+                    </ul>
+                    
+                    <p><strong>4. Управление цифровой репутацией:</strong></p>
+                    <ul>
+                        <li>Думайте перед публикации: может ли это навредить вам в будущем?</li>
+                        <li>Не участвуйте в травле и кибербуллинге</li>
+                        <li>Регулярно проверяйте настройки приватности</li>
+                        <li>Удаляйте старые аккаунты, которыми не пользуетесь</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="restartTraining()">
+                    <i class="fas fa-sync-alt"></i> Пройти ещё раз
+                </button>
+                <button class="btn btn-secondary" onclick="showStartScreen()">
+                    <i class="fas fa-home"></i> На главную
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="developer-info">
+        <p><strong>Интерактивный тренажёр "Цифровая репутация"</strong></p>
+        <p>Разработчик: <strong>Орлова Полина Сергеевна</strong>, 9 "Б" класс</p>
+        <p>Руководитель: <strong>Куценко Ирина Степановна</strong></p>
+        <p>МОУ СОШ №9 им. В. Т. Степанченко</p>
+        <p style="font-size:0.8rem; margin-top:0.5rem;">* Кейсы разработаны на основе материалов "Лаборатории Касперского", "Центра цифровой экспертизы Роскачества" и рекомендаций Минцифры РФ.</p>
+    </div>
+
+    <script>
+        const scenarios = [
+            {
+                id: 1,
+                description: "Ты общаешься с человеком в игровом чате уже месяц. Он предлагает обменяться фотографиями 'для доверия', но при этом отказывается от видеозвонка, ссылаясь на плохую камеру.",
+                options: [
+                    {
+                        text: "Отправить своё фото, раз уж так долго общаетесь",
+                        description: "Месяц общения — достаточный срок для доверия",
+                        correct: false,
+                        consequences: "Фото может быть использовано для создания фейкового профиля или шантажа. Отказ от видеозвонка — тревожный сигнал.",
+                        advice: "Длительное виртуальное общение не гарантирует безопасность. Настоящие друзья не отказываются от видеозвонков без серьёзных причин."
+                    },
+                    {
+                        text: "Предложить встретиться в публичном месте с друзьями",
+                        description: "Реальная встреча лучше виртуального общения",
+                        correct: true,
+                        consequences: "Если человек согласится и придёт, вы сможете познакомиться лично. Если откажется — это повод задуматься о его настоящих намерениях.",
+                        advice: "Встреча в безопасном публичном месте с сопровождением — лучший способ проверить искренность виртуального знакомого."
+                    },
+                    {
+                        text: "Прекратить общение без объяснений",
+                        description: "Лучше перестраховаться, если есть сомнения",
+                        correct: false,
+                        consequences: "Ты избегаешь потенциальной опасности, но возможно, ты лишаешь себя настоящего друга. Без объяснений это может выглядеть грубо.",
+                        advice: "Всегда можно вежливо объяснить, почему тебе некомфортно продолжать общение. Честность — лучшая политика в таких ситуациях."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 2,
+                description: "В школьном чате появился анонимный опрос 'Кто самый непопулярный в классе?'. Большинство уже проголосовало, и результаты видны всем.",
+                options: [
+                    {
+                        text: "Проголосовать, чтобы не выделяться",
+                        description: "Все участвуют, и я не хочу быть белой вороной",
+                        correct: false,
+                        consequences: "Ты поддерживаешь токсичную атмосферу и становишься соучастником травли. Даже анонимное участие вредит классному климату.",
+                        advice: "Не участвуй в опросах и обсуждениях, которые могут обидеть других. Молчаливое согласие тоже делает тебя частью проблемы."
+                    },
+                    {
+                        text: "Написать модератору чата с просьбой удалить опрос",
+                        description: "Такие опросы нарушают правила этичного общения",
+                        correct: true,
+                        consequences: "Модератор удаляет опрос и делает предупреждение создателю. Ты помогаешь сохранить здоровую атмосферу в чате.",
+                        advice: "Всегда сообщай о неподобающем контенте модераторам. Это помогает создавать безопасное пространство для всех участников."
+                    },
+                    {
+                        text: "Сделать скриншоты и показать классному руководителю",
+                        description: "Пусть взрослые разберутся с этой ситуацией",
+                        correct: false,
+                        consequences: "Конфликт выходит за пределы чата, что может усилить напряжение в классе. Учитель может неверно истолковать ситуацию.",
+                        advice: "Сначала попробуй решить проблему внутри чата через модераторов. Привлечение учителя должна быть крайней мерой."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 3,
+                description: "Ты случайно оставил аккаунт в соцсети открытым на школьном компьютере. Одноклассник написал от твоего имени несколько странных сообщений твоим друзьям.",
+                options: [
+                    {
+                        text: "Удалить чужие сообщения и сменить пароль",
+                        description: "Быстро исправить ситуацию и усилить защиту",
+                        correct: true,
+                        consequences: "Ты минимизируешь последствия и предотвращаешь дальнейшие взломы. Друзья поймут, что это был не ты.",
+                        advice: "Всегда выходи из аккаунтов на общественных устройствах. Используй двухфакторную аутентификацию для важных аккаунтов."
+                    },
+                    {
+                        text: "Написать всем, что это был взлом, и посмеяться над ситуацией",
+                        description: "Превратить конфуз в шутку",
+                        correct: false,
+                        consequences: "Друзья могут не воспринять это всерьёз. Шутки на такую тему могут снизить их бдительность в будущем.",
+                        advice: "Серьёзно относись к вопросам безопасности аккаунтов. Лёгкое отношение к взлому может создать ложное впечатление, что это нормально."
+                    },
+                    {
+                        text: "Наказать одноклассника, написав от его имени ещё хуже",
+                        description: "Он должен понять, как это неприятно",
+                        correct: false,
+                        consequences: "Ты опускаешься до его уровня и нарушаешь правила этики. Конфликт может разрастись, и пострадают невинные люди.",
+                        advice: "Не отвечай злом на зло. Вместо мести объясни, почему такие действия неприемлемы, и сообщи о ситуации взрослым."
+                    }
+                ],
+                difficulty: "easy"
+            },
+            {
+                id: 4,
+                description: "Ты создал новый аккаунт в соцсети и получаешь предложения дружбы от незнакомцев, которые утверждают, что учились с тобой в детском саду или живут в соседнем доме.",
+                options: [
+                    {
+                        text: "Принимать всех, чтобы быстро набрать друзей",
+                        description: "Больше друзей — интереснее лента",
+                        correct: false,
+                        consequences: "В друзьях оказываются мошенники и фейковые аккаунты. Твоя личная информация становится доступной незнакомцам.",
+                        advice: "Добавляй в друзья только тех, кого знаешь лично. Качество связей важнее количества."
+                    },
+                    {
+                        text: "Отклонять все запросы от незнакомых людей",
+                        description: "Безопасность важнее популярности",
+                        correct: true,
+                        consequences: "Твой аккаунт остаётся защищённым. Ты избегаешь риска мошенничества и нежелательного внимания.",
+                        advice: "Всегда проверяй профили незнакомцев перед принятием запросов. Обращай внимание на общих друзей и информацию в профиле."
+                    },
+                    {
+                        text: "Писать каждому, чтобы уточнить, откуда они тебя знают",
+                        description: "Узнать больше о новых знакомых",
+                        correct: false,
+                        consequences: "Ты тратишь время на общение с потенциальными мошенниками. Некоторые могут придумать правдоподобную историю, чтобы обмануть тебя.",
+                        advice: "Если не узнаёшь человека сразу, безопаснее отклонить запрос. Настоящие друзья обычно пишут личное сообщение, представляясь."
+                    }
+                ],
+                difficulty: "easy"
+            },
+            {
+                id: 5,
+                description: "Ты разместил в соцсети фото с семейного праздника. Через час незнакомый пользователь пишет, что знает твоего родственника и просит номер его телефона 'для срочного дела'.",
+                options: [
+                    {
+                        text: "Вежливо отказать, сославшись на приватность",
+                        description: "Нельзя раздавать чужие контакты без разрешения",
+                        correct: true,
+                        consequences: "Ты защищаешь приватность родственника. Даже если просьба искренняя, человек должен связаться с ним через официальные каналы.",
+                        advice: "Никогда не передавай контакты других людей без их согласия. Предложи незнакомцу связаться с человеком через соцсети или другие публичные способы."
+                    },
+                    {
+                        text: "Дать номер, раз он знает родственника",
+                        description: "Возможно, это действительно срочно",
+                        correct: false,
+                        consequences: "Твой родственник начинает получать странные звонки или сообщения. Его номер может оказаться в базе мошенников.",
+                        advice: "Даже если человек кажется знакомым, всегда уточняй у самого родственника, можно ли делиться его контактами. Безопасность важнее вежливости."
+                    },
+                    {
+                        text: "Попросить подробности, прежде чем что-то решать",
+                        description: "Узнать, что за срочное дело",
+                        correct: false,
+                        consequences: "Ты вступаешь в диалог с незнакомцем, который может быть мошенником. Он может выведать личную информацию или втянуть тебя в схему.",
+                        advice: "Не вступай в обсуждение личных дел с незнакомцами. Если ситуация действительно срочная, человек найдёт другие способы связи."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 6,
+                description: "Ты заметил, что твой друг регулярно публикует в соцсетях фото дорогих покупок с указанием цен и адресов магазинов. Его аккаунт открыт для всех.",
+                options: [
+                    {
+                        text: "Сделать ему замечание в комментариях",
+                        description: "Открыто указать на ошибку",
+                        correct: false,
+                        consequences: "Друг может обидеться на публичную критику. Ваши отношения испортятся, а его репутация пострадает на глазах у всех.",
+                        advice: "Личные советы по безопасности лучше давать в приватной беседе. Публичное указание на ошибки редко приводит к позитивным изменениям."
+                    },
+                    {
+                        text: "Написать ему в личные сообщения с рекомендациями",
+                        description: "Тактично объяснить риски такого поведения",
+                        correct: true,
+                        consequences: "Друг благодарит тебя за заботу и настраивает приватность аккаунта. Ваши отношения укрепляются.",
+                        advice: "Забота о безопасности друзей — важная часть дружбы. Делитесь знаниями о цифровой гигиене в доверительной обстановке."
+                    },
+                    {
+                        text: "Пожаловаться на его аккаунт администрации соцсети",
+                        description: "Пусть платформа сама разберётся с этим",
+                        correct: false,
+                        consequences: "Аккаунт друга могут заблокировать без объяснения причин. Он не поймёт, что сделал не так, и будет обижен на тебя, если узнает.",
+                        advice: "Крайние меры вроде жалоб стоит использовать только в случае явной опасности. Сначала попробуй решить вопрос личным общением."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 7,
+                description: "Ты зарегистрировался на форуме по интересам и хочешь задать вопрос опытным участникам. Для этого нужно заполнить подробную анкету с указанием школы, возраста и увлечений родителей.",
+                options: [
+                    {
+                        text: "Заполнить анкету честно, чтобы получить качественный ответ",
+                        description: "Чем больше информации, тем точнее совет",
+                        correct: false,
+                        consequences: "Твои личные данные могут быть использованы против тебя. Мошенники могут создать фейковый аккаунт или шантажировать тебя.",
+                        advice: "Никогда не указывай точные личные данные на публичных форумах. Используй нейтральный никнейм и общую информацию."
+                    },
+                    {
+                        text: "Заполнить анкету, но изменить некоторые данные",
+                        description: "Сохранение анонимности с получением доступа",
+                        correct: true,
+                        consequences: "Ты получаешь доступ к форуму, сохраняя приватность. Изменённые данные защищают тебя от потенциальных угроз.",
+                        advice: "При регистрации на незнакомых ресурсах используй минимально необходимую информацию. Меняй детали, которые могут идентифицировать тебя."
+                    },
+                    {
+                        text: "Отказаться от регистрации и поискать другой форум",
+                        description: "Если требуют слишком много данных — это подозрительно",
+                        correct: false,
+                        consequences: "Ты теряешь возможность получить ценные знания от сообщества. Возможно, этот форум безопасен, но перестраховывается.",
+                        advice: "Требование подробной анкеты не всегда означает злой умысел. Попробуй найти баланс между участием в сообществе и защитой приватности."
+                    }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 8,
+                description: "Ты получил предложение стать администратором паблика о твоём любимом хобби. Владелец просит твой пароль от соцсети 'для удобства управления'.",
+                options: [
+                    {
+                        text: "Дать пароль, раз это для общего дела",
+                        description: "Доверие — основа сотрудничества",
+                        correct: false,
+                        consequences: "Твой аккаунт могут использовать для рассылки спама или мошеннических сообщений. Восстановить доступ будет сложно.",
+                        advice: "Никогда и никому не передавай свои пароли. Настоящие администраторы используют специальные инструменты управления без доступа к личным аккаунтам."
+                    },
+                    {
+                        text: "Предложить альтернативные способы управления",
+                        description: "Например, создать общую почту или использовать менеджер прав",
+                        correct: true,
+                        consequences: "Владелец паблика соглашается на безопасный вариант. Ты становишься администратором, не подвергая риску свой аккаунт.",
+                        advice: "Всегда ищи безопасные альтернативы при совместной работе в интернете. Современные платформы предлагают инструменты для коллективного управления."
+                    },
+                    {
+                        text: "Отказаться от предложения без объяснений",
+                        description: "Любые требования пароля — это красный флаг",
+                        correct: false,
+                        consequences: "Ты теряешь интересную возможность. Возможно, владелец паблика просто не разбирается в безопасности и готов к диалогу.",
+                        advice: "Не отказывайся сразу от возможностей из-за незнания собеседника. Попробуй объяснить риски и предложить безопасное решение."
+                    }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 9,
+                description: "Твоя подруга просит тебя проверить её новый профиль в соцсети и оставить несколько комментариев 'для живого вида'. Профиль создан под вымышленным именем, но с её реальными фото.",
+                options: [
+                    {
+                        text: "Выполнить просьбу, раз это помогает подруге",
+                        description: "Друзья должны поддерживать друг друга",
+                        correct: false,
+                        consequences: "Ты участвуешь в создании фейкового аккаунта, что нарушает правила соцсетей. Оба аккаунта могут быть заблокированы.",
+                        advice: "Поддержка друзей не должна нарушать правила безопасности. Помоги подруге развивать её основной аккаунт, а не создавать фейковые."
+                    },
+                    {
+                        text: "Вежливо отказать и объяснить риски",
+                        description: "Рассказать о возможных последствиях таких действий",
+                        correct: true,
+                        consequences: "Подруга понимает твою позицию и отказывается от создания фейкового аккаунта. Ваши отношения сохраняются.",
+                        advice: "Настоящая дружба включает честность и заботу о безопасности друг друга. Объясняй друзьям риски, даже если это неудобно."
+                    },
+                    {
+                        text: "Пожаловаться на профиль подруги администрации",
+                        description: "Фейковые аккаунты вредят всем пользователям",
+                        correct: false,
+                        consequences: "Подруга обнаруживает, что это ты пожаловался, и отношения разрушаются. Она чувствует себя преданной.",
+                        advice: "Крайние меры применяй только после попытки мирного решения. Сначала поговори с человеком, объясни свою позицию."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 10,
+                description: "Ты выиграл конкурс в интернете и организаторы просят прислать скан паспорта для 'подтверждения личности и отправки приза'.",
+                options: [
+                    {
+                        text: "Отправить скан, замазав серию и номер",
+                        description: "Так и личность подтвердишь, и данные защитишь",
+                        correct: false,
+                        consequences: "Даже замазанные данные могут быть восстановлены. Кроме того, мошенникам достаточно фотографии с ФИО и датой рождения.",
+                        advice: "Никогда не отправляй сканы документов незнакомым людям. Настоящие организаторы конкурсов используют другие способы верификации."
+                    },
+                    {
+                        text: "Попросить альтернативные способы подтверждения",
+                        description: "Например, видеозвонок или подтверждение через соцсети",
+                        correct: true,
+                        consequences: "Организаторы соглашаются на видеозвонок, и ты получаешь приз, сохранив конфиденциальность.",
+                        advice: "Всегда предлагай безопасные альтернативы при запросе личных данных. Если организаторы отказываются — это повод задуматься."
+                    },
+                    {
+                        text: "Отказаться от приза, если требуют документы",
+                        description: "Лучше потерять подарок, чем безопасность",
+                        correct: false,
+                        consequences: "Ты теряешь заслуженный приз. Возможно, конкурс был честным, а организаторы просто не подумали о безопасности участников.",
+                        advice: "Не отказывайся сразу от достижений. Попробуй договориться о безопасном способе получения приза."
+                    }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 11,
+                description: "Ты нашёл в интернете базу данных с паролями от игровых аккаунтов. Друг предлагает проверить, нет ли там твоего пароля, и поменять его, если найдётся.",
+                options: [
+                    {
+                        text: "Ничего не проверять и сообщить о базе данных администрации игровой платформы",
+                        description: "Помочь защитить других пользователей, а не проверять свою безопасность",
+                        correct: true,
+                        consequences: "Платформа быстро блокирует утечку, и тысячи аккаунтов остаются в безопасности. Ты получаешь благодарность от службы поддержки.",
+                        advice: "При обнаружении утечек данных всегда сообщай об этом официальным службам. Проверка своих данных в таких базах только подтверждает мошенникам, что информация актуальна."
+                    },
+                    {
+                        text: "Проверить только свой аккаунт, чтобы убедиться в безопасности",
+                        description: "Узнать, не пострадал ли ты лично",
+                        correct: false,
+                        consequences: "Твой запрос фиксируется в логах базы данных. Мошенники понимают, что ты активный пользователь, и могут целенаправленно атаковать твой аккаунт.",
+                        advice: "Проверка паролей в утекших базах — плохая практика. Лучше сразу сменить пароли на всех важных аккаунтах, особенно если использовал один и тот же пароль в нескольких местах."
+                    },
+                    {
+                        text: "Скачать базу и проверить аккаунты всех друзей",
+                        description: "Предупредить близких об опасности",
+                        correct: false,
+                        consequences: "Ты нарушаешь закон, распространяя украденные данные. Кроме того, можешь заразить устройство вирусом, скачивая файл с неизвестного источника.",
+                        advice: "Не распространяй утекшие данные, даже с благими намерениями. Сообщи друзьям об общей угрозе, но не предоставляй им конкретную информацию из базы."
+                    }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 12,
+                description: "Твой аккаунт в соцсети взломали и рассылают от твоего имени спам. Друзья уже начали получать странные сообщения с просьбами перевести деньги.",
+                options: [
+                    {
+                        text: "Немедленно сменить пароль и включить двухфакторную аутентификацию",
+                        description: "Восстановить контроль над аккаунтом и усилить защиту",
+                        correct: true,
+                        consequences: "Ты быстро восстанавливаешь аккаунт и предотвращаешь дальнейший ущерб. Друзья получают извинения и предупреждение о взломе.",
+                        advice: "При первых признаках взлома немедленно меняй пароль и проверяй активность аккаунта. Двухфакторная аутентификация значительно усложняет взлом в будущем."
+                    },
+                    {
+                        text: "Удалить аккаунт и создать новый",
+                        description: "Начать всё с чистого листа",
+                        correct: false,
+                        consequences: "Ты теряешь всю историю переписок, фото и контакты. Друзья могут не найти твой новый аккаунт, и связь прервётся.",
+                        advice: "Удаление аккаунта — крайняя мера. Сначала попробуй восстановить контроль через службу поддержки. Сохрани важные данные перед любыми радикальными действиями."
+                    },
+                    {
+                        text: "Написать взломщику с требованием вернуть аккаунт",
+                        description: "Попытаться договориться с нарушителем",
+                        correct: false,
+                        consequences: "Взломщик получает подтверждение, что ты заметил взлом. Он может потребовать выкуп за возврат аккаунта или начать шантажировать тебя.",
+                        advice: "Никогда не вступай в переговоры со взломщиками. Они не заинтересованы в твоей безопасности. Действуй через официальные каналы восстановления."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 13,
+                description: "Ты публикуешь в соцсети фото с табличкой с домашним адресом на конкурсе 'Лучший подъезд'. Фото набирает популярность, и незнакомые люди начинают писать тебе.",
+                options: [
+                    {
+                        text: "Срочно удалить фото и сделать аккаунт приватным",
+                        description: "Ограничить доступ к личной информации",
+                        correct: true,
+                        consequences: "Ты предотвращаешь дальнейшее распространение своего адреса. Нежелательное внимание прекращается через несколько дней.",
+                        advice: "Никогда не публикуй информацию, позволяющую определить твоё местоположение. Даже косвенные детали (номер дома, название улицы) могут быть опасны."
+                    },
+                    {
+                        text: "Ответить всем, что это просто конкурс и адрес вымышленный",
+                        description: "Успокоить людей, не удаляя популярное фото",
+                        correct: false,
+                        consequences: "Люди продолжают интересоваться твоим адресу. Некоторые могут проверить информацию и обнаружить правду.",
+                        advice: "Не пытайся исправить ситуацию ложью. Удаление контента — единственный способ остановить распространение личной информации."
+                    },
+                    {
+                        text: "Игнорировать сообщения, раз фото уже опубликовано",
+                        description: "Что сделано, то сделано",
+                        correct: false,
+                        consequences: "Интерес к твоему адресу растёт. Кто-то из подписчиков может жить рядом и решить познакомиться лично без твоего согласия.",
+                        advice: "Пассивность в вопросах безопасности опасна. Всегда активно защищай свою приватность, даже если ошибка уже совершена."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 14,
+                description: "Ты используешь один и тот же пароль для почты, соцсетей и игровых аккаунтов. Друг говорит, что это небезопасно, но тебе удобно.",
+                options: [
+                    {
+                        text: "Использовать менеджер паролей для создания и хранения уникальных паролей",
+                        description: "Сочетание безопасности и удобства",
+                        correct: true,
+                        consequences: "Твои аккаунты теперь защищены уникальными сложными паролями. Даже если взломают один аккаунт, остальные будут в безопасности.",
+                        advice: "Менеджеры паролей — лучший способ соблюдать цифровую гигиену. Они генерируют сложные пароли и автоматически заполняют формы."
+                    },
+                    {
+                        text: "Продолжать использовать один пароль, но сделать его сложнее",
+                        description: "Добавить больше символов и цифр",
+                        correct: false,
+                        consequences: "Если этот пароль всё-таки утечёт, взломщики получат доступ ко всем твоим аккаунтам. Сложность не защищает от утечек баз данных.",
+                        advice: "Уникальность важнее сложности. Даже простой, но уникальный пароль для каждого сервиса безопаснее одного суперсложного."
+                    },
+                    {
+                        text: "Записать разные пароли в блокнот",
+                        description: "Бумажный носитель надёжнее цифрового",
+                        correct: false,
+                        consequences: "Ты теряешь блокнот или кто-то из домашних находит его. Все пароли оказываются скомпрометированы.",
+                        advice: "Бумажные носители уязвимы для физического доступа. Используй зашифрованные цифровые решения для хранения паролей."
+                    }
+                ],
+                difficulty: "easy"
+            },
+            {
+                id: 15,
+                description: "Ты устанавливаешь новое приложение, и оно запрашивает доступ к твоим SMS. Разработчики объясняют, что это нужно для автоматического ввода кодов подтверждения.",
+                options: [
+                    {
+                        text: "Отказать в доступе и вводить коды вручную",
+                        description: "Сохранение контроля над сообщениями",
+                        correct: true,
+                        consequences: "Ты немного тратишь времени на ручной ввод, но защищаешь свои финансовые данные и личные переписки.",
+                        advice: "Доступ к SMS даёт приложению возможность читать все сообщения, включая банковские коды. Разрешай такой доступ только абсолютно доверенным приложениям."
+                    },
+                    {
+                        text: "Разрешить доступ, раз это удобно",
+                        description: "Автоматизация экономит время",
+                        correct: false,
+                        consequences: "Приложение получает доступ ко всем твоим сообщениям. Если оно окажется мошенническим, злоумышленники смогут подтверждать операции с твоими счетами.",
+                        advice: "Удобство не должно перевешивать безопасность. Критически относись к запросам доступа к важным данным, даже если они кажутся логичными."
+                    },
+                    {
+                        text: "Разрешить доступ, но удалить приложение после использования",
+                        description: "Временное решение для конкретной задачи",
+                        correct: false,
+                        consequences: "За время использования приложение успевает скопировать все твои SMS. Удаление не гарантирует, что данные уже не переданы третьим лицам.",
+                        advice: "Разрешение доступа — это всегда риск. Если приложению действительно нужен доступ к SMS, стоит задуматься о его необходимости вообще."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 16,
+                description: "Ты покупаешь что-то на онлайн-барахолке. Продавец просит перевести деньги на карту до отправки товара, обещая выслать его сразу после оплаты.",
+                options: [
+                    {
+                        text: "Использовать безопасные способы оплаты с защитой покупателя",
+                        description: "Например, сервисы с эскроу-счётами или наложенным платежом",
+                        correct: true,
+                        consequences: "Ты защищаешь свои деньги. Если продавец честный, он согласится на безопасную сделку. Если мошенник — откажется, и ты избежишь потери денег.",
+                        advice: "Никогда не переводи деньги незнакомым людям напрямую. Используй платформы с гарантиями для покупателей и проверенными способами оплаты."
+                    },
+                    {
+                        text: "Перевести часть суммы в качестве предоплаты",
+                        description: "Проявить доверие, но минимизировать риски",
+                        correct: false,
+                        consequences: "Ты теряешь даже часть денег. Мошенники часто соглашаются на частичную предоплату, чтобы получить хоть что-то.",
+                        advice: "Мошенники адаптируются к любым схемам. Даже частичная предоплата рискованна при работе с незнакомыми продавцами."
+                    },
+                    {
+                        text: "Попросить фото товара с сегодняшней датой и перевести деньги",
+                        description: "Убедиться, что товар действительно существует",
+                        correct: false,
+                        consequences: "Мошенники могут использовать чужие фото или сгенерированные изображения. Даже реальное фото не гарантирует, что товар будет отправлен.",
+                        advice: "Фото легко подделать. Безопасные сделки строятся на защищённых способах оплаты, а не на визуальных подтверждениях."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 17,
+                description: "Ты замечаешь, что твой друг в соцсетях резко меняет стиль общения, начинает просить деньги у всех подряд и публикует странные посты. Это не похоже на него.",
+                options: [
+                    {
+                        text: "Связаться с другом другими способами и узнать, всё ли в порядке",
+                        description: "Проверить, не взломали ли его аккаунт",
+                        correct: true,
+                        consequences: "Оказывается, аккаунт действительно взломали. Ты помогаешь другу восстановить доступ и предупредить других общих знакомых.",
+                        advice: "Резкие изменения в поведении в соцсетях — частый признак взлома. Всегда проверяй такие ситуации через альтернативные каналы связи."
+                    },
+                    {
+                        text: "Написать ему в личные сообщения с расспросами",
+                        description: "Узнать, что происходит, напрямую",
+                        correct: false,
+                        consequences: "Ты общаешься со взломщиком, который может выманить у тебя личную информацию или деньги. Он также может заблокировать тебя, чтобы ты не предупредил других.",
+                        advice: "При подозрении на взлом не вступай в диалог через скомпрометированный аккаунт. Используй телефон, другие мессенджеры или личную встречу."
+                    },
+                    {
+                        text: "Проигнорировать, раз он сам так себя ведёт",
+                        description: "Не вмешиваться в личные дела друга",
+                        correct: false,
+                        consequences: "Друг теряет деньги и репутацию, пока его аккаунт используется мошенниками. Ты упускаешь возможность помочь.",
+                        advice: "Безразличие к проблемам друзей может разрушить отношения. Прояви заботу, даже если ситуация кажется неловкой."
+                    }
+                ],
+                difficulty: "easy"
+            },
+            {
+                id: 18,
+                description: "Ты видишь в интернете предложение 'заработать на лайках и репостах'. Нужно внести страховой депозит 500 рублей, после чего обещают выплаты за каждое действие.",
+                options: [
+                    {
+                        text: "Игнорировать предложение как очевидный обман",
+                        description: "Никакая честная работа не требует предоплаты",
+                        correct: true,
+                        consequences: "Ты сохраняешь свои деньги. Через неделю видишь жалобы других пользователей, которые потеряли свои депозиты.",
+                        advice: "Любые схемы заработка, требующие предоплаты, — это мошенничество. Настоящий заработок в интернете строится на оказании услуг или создании ценного контента."
+                    },
+                    {
+                        text: "Внести депозит, раз сумма небольшая",
+                        description: "Попробовать, мало ли, это правда работает",
+                        correct: false,
+                        consequences: "Теряешь 500 рублей. Система может даже выплатить тебе небольшую сумму сначала, чтобы убедить внести больше денег, а потом исчезнуть.",
+                        advice: "Мошенники часто используют психологию: небольшая начальная сумма кажется незначительной, но это только начало. Не ведись на такие уловки."
+                    },
+                    {
+                        text: "Посоветоваться с друзьями, стоит ли пробовать",
+                        description: "Коллективное решение безопаснее",
+                        correct: false,
+                        consequences: "Некоторые друзья могут тоже заинтересоваться и потерять деньги. Ты невольно становишься распространителем мошеннической схемы.",
+                        advice: "При сомнениях в легальности предложения не советуйся с друзьями, а поищи независимые отзывы и мнения экспертов."
+                    }
+                ],
+                difficulty: "easy"
+            },
+            {
+                id: 19,
+                description: "Ты устанавливаешь бесплатную мобильную игру, и она сразу показывает полноэкранную рекламу с кнопкой 'Закрыть' в неприметном месте. Чтобы выйти, нужно кликнуть точно в маленький крестик.",
+                options: [
+                    {
+                        text: "Удалить игру и поставить низкую оценку в магазине приложений",
+                        description: "Не поддерживать агрессивную рекламу",
+                        correct: true,
+                        consequences: "Ты освобождаешь место на телефоне и предупреждаешь других пользователей через низкий рейтинг. Разработчики теряют установки.",
+                        advice: "Агрессивная реклама часто указывает на недобросовестных разработчиков. Такие приложения могут также содержать вредоносный код или собирать лишние данные."
+                    },
+                    {
+                        text: "Терпеть рекламу, раз игра бесплатная",
+                        description: "Разработчикам нужно как-то зарабатывать",
+                        correct: false,
+                        consequences: "Ты тратишь нервы и время на закрытие навязчивой рекламы. Приложение может начать показывать ещё больше рекламы или требовать деньги за её отключение.",
+                        advice: "Бесплатность не оправдывает плохой пользовательский опыт. Существует много качественных бесплатных игр с ненавязчивой рекламой."
+                    },
+                    {
+                        text: "Найти взломанную версию без рекламы",
+                        description: "Решить проблему неофициальным способом",
+                        correct: false,
+                        consequences: "Взломанное приложение может содержать вирусы или шпионское ПО. Ты рискуешь безопасностью всего устройства и личных данных.",
+                        advice: "Неофициальные версии приложений крайне опасны. Лучше найти легальную альтернативу или оплатить удаление рекламы в официальной версии."
+                    }
+                ],
+                difficulty: "easy"
+            },
+            {
+                id: 20,
+                description: "Ты хочешь скачать фильм с торрент-трекера. Файл предлагают скачать через установку специального загрузчика, который 'ускоряет скачивание в 10 раз'.",
+                options: [
+                    {
+                        text: "Искать другой источник или использовать легальные сервисы",
+                        description: "Избегать подозрительных загрузчиков",
+                        correct: true,
+                        consequences: "Ты находишь фильм на легальном стриминговом сервисе за небольшую плату или с рекламой. Качество гарантировано, и нет риска вирусов.",
+                        advice: "Загрузчики с торрент-трекеров часто содержат вредоносное ПО. Легальные сервисы безопаснее, даже если требуют оплаты."
+                    },
+                    {
+                        text: "Установить загрузчик, раз он ускоряет скачивание",
+                        description: "Быстрее получить желаемый контент",
+                        correct: false,
+                        consequences: "Твой компьютер заражается вирусом, который крадёт пароли или показывает навязчивую рекламу. Удалить его сложно.",
+                        advice: "Не доверяй обещаниям ускорения скачивания. Часто это просто приманка для распространения вредоносного программного обеспечения."
+                    },
+                    {
+                        text: "Установить загрузчик в виртуальной машине",
+                        description: "Защитить основную систему",
+                        correct: false,
+                        consequences: "Ты тратишь время на настройку виртуальной среды. Даже если вирус не попадёт на основную систему, ты поддерживаешь нелегальный контент.",
+                        advice: "Использование виртуальных машин для опасных действий — сложный и не всегда надёжный метод. Лучше выбирать легальные способы получения контента."
+                    }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 21,
+                description: "Ты получил сообщение от друга в соцсети с просьбой срочно занять 2000 рублей, так как у него заблокирована карта. Он просит перевести на номер телефона, который прилагается.",
+                options: [
+                    {
+                        text: "Перевести деньги, ведь друг в беде",
+                        description: "Надо помогать близким",
+                        correct: false,
+                        consequences: "Деньги уходят мошенникам, друг их не получает. Теряешь 2000 рублей и чувствуешь себя обманутым.",
+                        advice: "Всегда проверяйте такие просьбы по телефону или лично. Мошенники часто взламывают аккаунты и рассылают подобные сообщения."
+                    },
+                    {
+                        text: "Позвонить другу по телефону и уточнить",
+                        description: "Личный звонок прояснит ситуацию",
+                        correct: true,
+                        consequences: "Выясняется, что друг ничего не просил, его аккаунт взломали. Ты сохраняешь деньги и помогаешь другу восстановить доступ.",
+                        advice: "При любых финансовых просьбах в соцсетях всегда связывайся с человеком по телефону или при личной встрече."
+                    },
+                    {
+                        text: "Попросить доказательства: фото паспорта или видео",
+                        description: "Пусть подтвердит личность",
+                        correct: false,
+                        consequences: "Мошенник может прислать фейковые документы. Ты всё равно рискуешь перевести деньги, если поверишь.",
+                        advice: "Документы легко подделать. Единственный надёжный способ — связаться с другом напрямую."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 22,
+                description: "Ты хочешь подписаться на интересный канал в Telegram, но для доступа к контенту нужно отправить код из SMS, который придёт на твой номер.",
+                options: [
+                    {
+                        text: "Отправить код, это же для подписки",
+                        description: "Обычная процедура подтверждения",
+                        correct: false,
+                        consequences: "Код на самом деле используется для восстановления доступа к твоему аккаунту. Мошенники получают контроль над твоим Telegram.",
+                        advice: "Никогда не вводи коды из SMS на незнакомых сайтах. Это стандартная схема кражи аккаунтов."
+                    },
+                    {
+                        text: "Не отправлять, это мошенничество",
+                        description: "Коды нужны только для входа, не для подписки",
+                        correct: true,
+                        consequences: "Ты сохраняешь доступ к своему аккаунту. Канал скорее всего фейковый.",
+                        advice: "Настоящие каналы не запрашивают SMS-коды для подписки. Используй только официальные методы."
+                    },
+                    {
+                        text: "Попробовать другой канал с таким же контентом",
+                        description: "Найти легальный источник",
+                        correct: false,
+                        consequences: "Ты можешь наткнуться на другой мошеннический ресурс. Проблема не решена.",
+                        advice: "Лучше искать контент через проверенные источники и официальные каналы."
+                    }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 23,
+                description: "На сайте знакомств тебе пишет симпатичный человек, предлагает продолжить общение в мессенджере, скидывает ссылку для скачивания приложения.",
+                options: [
+                    {
+                        text: "Перейти по ссылке, чтобы пообщаться",
+                        description: "Скорее начать общение",
+                        correct: false,
+                        consequences: "Ссылка ведёт на фишинговый сайт или устанавливает вредоносное ПО. Твои данные оказываются под угрозой.",
+                        advice: "Никогда не переходи по сомнительным ссылкам от незнакомцев. Предлагай использовать официальные магазины приложений."
+                    },
+                    {
+                        text: "Предложить общаться в другом, официальном мессенджере",
+                        description: "Например, в Telegram или WhatsApp через Play Market",
+                        correct: true,
+                        consequences: "Человек соглашается на безопасный вариант. Ты избегаешь риска заражения.",
+                        advice: "Всегда скачивай приложения только из официальных магазинов. Если собеседник отказывается — это мошенник."
+                    },
+                    {
+                        text: "Игнорировать и заблокировать",
+                        description: "Слишком подозрительно",
+                        correct: false,
+                        consequences: "Ты теряешь возможность нормального знакомства, хотя человек мог быть искренним, но неразборчивым.",
+                        advice: "Лучше вежливо объяснить, что ты не переходишь по ссылкам от незнакомцев, и предложить альтернативу."
+                    }
+                ],
+                difficulty: "medium"
+            },
+            {
+                id: 24,
+                description: "Твой одноклассник создал мем с твоей фотографией и выложил в общий чат. Тебе это неприятно.",
+                options: [
+                    {
+                        text: "Сделать вид, что всё равно",
+                        description: "Не показывать обиду",
+                        correct: false,
+                        consequences: "Одноклассник продолжит так шутить, потому что не видит реакции. Тебе становится ещё неприятнее.",
+                        advice: "Не молчи, если тебе что-то не нравится. Игнорирование проблемы редко её решает."
+                    },
+                    {
+                        text: "Написать ему лично и попросить удалить",
+                        description: "Объяснить свои чувства",
+                        correct: true,
+                        consequences: "Одноклассник извиняется и удаляет мем. Вы сохраняете нормальные отношения.",
+                        advice: "Личный разговор часто помогает решить конфликт без привлечения посторонних."
+                    },
+                    {
+                        text: "Ответить таким же мемом",
+                        description: "Проучить обидчика",
+                        correct: false,
+                        consequences: "Начинается перепалка, чат наполняется оскорблениями. Ситуация выходит из-под контроля.",
+                        advice: "Месть только разжигает конфликт. Лучше спокойно объяснить, что тебе неприятно."
+                    }
+                ],
+                difficulty: "easy"
+            },
+            {
+                id: 25,
+                description: "Ты хочешь удалить старый аккаунт в соцсети, но забыл пароль. Сайт предлагает восстановить доступ по номеру телефона, но ты уже не пользуешься тем номером.",
+                options: [
+                    {
+                        text: "Оставить как есть, аккаунт просто не используется",
+                        description: "Не тратить время на восстановление",
+                        correct: false,
+                        consequences: "Аккаунт могут взломать и использовать для спама от твоего имени. Твои старые фото остаются доступными.",
+                        advice: "Неиспользуемые аккаунты лучше удалять или деактивировать, чтобы не создавать рисков."
+                    },
+                    {
+                        text: "Обратиться в поддержку соцсети",
+                        description: "Попытаться удалить через службу поддержки",
+                        correct: true,
+                        consequences: "Поддержка помогает восстановить доступ или удаляет аккаунт после проверки. Аккаунт благополучно удалён.",
+                        advice: "В таких случаях официальная поддержка — единственный законный способ. Наберись терпения и следуй инструкциям."
+                    },
+                    {
+                        text: "Создать новый аккаунт и забыть о старом",
+                        description: "Начать с чистого листа",
+                        correct: false,
+                        consequences: "Старый аккаунт остаётся в сети, твои данные продолжают там висеть. Возможна утечка.",
+                        advice: "Лучше удалить старый аккаунт, даже если это требует усилий. Это важная часть цифровой гигиены."
+                    }
+                ],
+                difficulty: "medium"
+            }
+        ];
+
+        let currentScenario = 1;
+        let score = 0;
+        let correctAnswers = 0;
+        let selectedScenariosCount = 10;
+        let totalScenarios = 10;
+        let selectedOptionIndex = -1;
+        let isAnswered = false;
+        let currentScenarios = [];
+        let scoredScenarios = new Set();
+
+        function selectScenarioCount(count) {
+            selectedScenariosCount = count;
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            document.getElementById('start-btn').disabled = false;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startTraining() {
+            totalScenarios = selectedScenariosCount;
+            const shuffled = shuffleArray([...scenarios]);
+            currentScenarios = shuffled.slice(0, selectedScenariosCount);
+            
+            document.getElementById('start-screen').classList.remove('active');
+            document.querySelector('.progress-container').style.display = 'block';
+            document.querySelector('.relevance-box').style.display = 'none';
+            document.querySelector('.benefits-box').style.display = 'none';
+            currentScenario = 1;
+            score = 0;
+            correctAnswers = 0;
+            document.getElementById('score').textContent = '0';
+            document.getElementById('current-scenario').textContent = '1';
+            document.getElementById('correct-count').textContent = '0';
+            initScenario(1);
+        }
+
+        function showStartScreen() {
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('start-screen').classList.add('active');
+            document.querySelector('.progress-container').style.display = 'none';
+            document.getElementById('scenario-container').classList.remove('active');
+            document.getElementById('theory-section').style.display = 'none';
+            document.querySelector('.relevance-box').style.display = 'block';
+            document.querySelector('.benefits-box').style.display = 'block';
+            currentScenario = 1;
+            score = 0;
+            correctAnswers = 0;
+            document.getElementById('score').textContent = '0';
+            document.getElementById('current-scenario').textContent = '1';
+            document.getElementById('correct-count').textContent = '0';
+        }
+
+        function initScenario(num) {
+            const scenario = currentScenarios[num - 1];
+            if (!scenario) return;
+            
+            selectedOptionIndex = -1;
+            isAnswered = false;
+            
+            const container = document.getElementById('scenario-container');
+            if (!container) return;
+            
+            const difficultyText = {
+                'easy': 'Лёгкий',
+                'medium': 'Средний',
+                'hard': 'Сложный'
+            }[scenario.difficulty] || 'Лёгкий';
+            
+            container.innerHTML = `
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <div class="scenario-number">Ситуация ${num}</div>
+                        <div class="scenario-difficulty difficulty-${scenario.difficulty}">${difficultyText}</div>
+                    </div>
+                    <p class="scenario-description">${scenario.description}</p>
+                    
+                    <div class="options-grid">
+                        ${scenario.options.map((option, index) => `
+                            <div class="option" data-index="${index}" onclick="selectOption(${index}, ${num})">
+                                <div class="option-icon">${String.fromCharCode(65 + index)}</div>
+                                <div class="option-content">
+                                    <h4>${option.text}</h4>
+                                    <p>${option.description}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div class="feedback-section" id="feedback-${num}">
+                    <div class="feedback-header">
+                        <div class="feedback-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="feedback-title">Результат вашего выбора</h3>
+                    </div>
+                    
+                    <div class="consequences">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Возможные последствия</h4>
+                        <p id="consequences-text-${num}"></p>
+                    </div>
+                    
+                    <div class="expert-advice">
+                        <h4><i class="fas fa-user-tie"></i> Совет эксперта</h4>
+                        <p id="advice-text-${num}"></p>
+                    </div>
+                </div>
+                
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="restartScenario()">
+                        <i class="fas fa-redo"></i> Повторить ситуацию
+                    </button>
+                    <button class="btn btn-primary" onclick="nextScenario()" id="next-btn-${num}">
+                        ${num === totalScenarios ? 'Завершить тренажёр' : 'Следующая ситуация'} <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                <div class="scenario-counter">Ситуация ${num} из ${totalScenarios}</div>
+                ${scenario.difficulty === 'hard' ? '<div class="hint"><i class="fas fa-lightbulb"></i> Это сложная ситуация. Внимательно проанализируй все варианты перед выбором.</div>' : ''}
+            `;
+            
+            document.querySelectorAll('.scenario-container').forEach(el => el.classList.remove('active'));
+            container.classList.add('active');
+            document.getElementById(`feedback-${num}`).classList.remove('show');
+            
+            updateProgress();
+        }
+
+        function selectOption(index, scenarioNum) {
+            if (isAnswered) return;
+            
+            const scenario = currentScenarios[scenarioNum - 1];
+            const option = scenario.options[index];
+            const feedback = document.getElementById(`feedback-${scenarioNum}`);
+            
+            document.querySelectorAll(`#scenario-container .option`).forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            const selectedElement = document.querySelector(`#scenario-container .option[data-index="${index}"]`);
+            selectedElement.classList.add('selected');
+            selectedElement.classList.add(option.correct ? 'correct' : 'incorrect');
+            
+            selectedOptionIndex = index;
+            
+            document.getElementById(`consequences-text-${scenarioNum}`).textContent = option.consequences;
+            document.getElementById(`advice-text-${scenarioNum}`).textContent = option.advice;
+            
+            if (option.correct && !scoredScenarios.has(scenario.id)) {
+    score += scenario.difficulty === 'easy' ? 5 : scenario.difficulty === 'medium' ? 10 : 15;
+    correctAnswers++;
+    scoredScenarios.add(scenario.id);
+    document.getElementById('score').textContent = score;
+    document.getElementById('correct-count').textContent = correctAnswers;
+            }
+            
+            setTimeout(() => {
+                feedback.classList.add('show');
+                const feedbackElement = document.getElementById(`feedback-${scenarioNum}`);
+                feedbackElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 300);
+            
+            isAnswered = true;
+        }
+    function scrollToScenario() {
+    const container = document.getElementById('scenario-container');
+    if (!container) return;
+    const headerEl = document.querySelector('.header');
+    const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+    const y = container.getBoundingClientRect().top + window.scrollY - headerHeight - 12;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+}
+        function nextScenario() {
+            if (!isAnswered) {
+                alert('Пожалуйста, выберите вариант ответа перед продолжением!');
+                return;
+            }
+            
+            if (currentScenario < totalScenarios) {
+                currentScenario++;
+                document.getElementById('current-scenario').textContent = currentScenario;
+                initScenario(currentScenario);
+                scrollToScenario();
+            } else {
+                showResults();
+            }
+        }
+
+        function restartScenario() {
+    if (!isAnswered) return;
+    initScenario(currentScenario);
+    scrollToScenario();
+        }
+        function updateProgress() {
+            const progress = (currentScenario / totalScenarios) * 100;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+            document.getElementById('progress-text').textContent = `${currentScenario}/${totalScenarios}`;
+        }
+
+        function showResults() {
+            document.querySelectorAll('.scenario-container').forEach(el => el.classList.remove('active'));
+            document.getElementById('results').classList.add('active');
+            
+            const maxScore = totalScenarios * 15;
+            const percentage = (score / maxScore) * 100;
+            
+            document.getElementById('final-score').textContent = score;
+            
+            let feedback = '';
+            if (percentage >= 85) {
+                feedback = 'Отличный результат! Вы отлично разбираетесь в вопросах цифровой безопасности и репутации.';
+            } else if (percentage >= 70) {
+                feedback = 'Хороший результат! У вас есть прочные знания, но некоторые моменты требуют дополнительного внимания.';
+            } else if (percentage >= 50) {
+                feedback = 'Средний результат. Рекомендуем повторить сложные темы.';
+            } else {
+                feedback = 'Вам необходимо уделить больше внимания цифровой безопасности. Рекомендуем изучить теорию и попробовать ещё раз.';
+                document.getElementById('theory-section').style.display = 'block';
+            }
+            
+            document.getElementById('results-feedback').textContent = feedback;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restartTraining() {
+            currentScenario = 1;
+            score = 0;
+            correctAnswers = 0;
+            
+            document.getElementById('score').textContent = '0';
+            document.getElementById('current-scenario').textContent = '1';
+            document.getElementById('correct-count').textContent = '0';
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('theory-section').style.display = 'none';
+            
+            document.getElementById('start-screen').classList.add('active');
+            document.querySelector('.progress-container').style.display = 'none';
+            document.getElementById('scenario-container').classList.remove('active');
+            document.querySelector('.relevance-box').style.display = 'block';
+            document.querySelector('.benefits-box').style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const first = document.querySelector('.difficulty-btn');
+    if (first) {
+        first.classList.add('selected');
+        document.getElementById('start-btn').disabled = false;
+        selectedScenariosCount = 10;
+    }
+});
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth < 768) {
+                document.querySelectorAll('.option-content h4').forEach(el => {
+                    el.style.fontSize = '1rem';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
